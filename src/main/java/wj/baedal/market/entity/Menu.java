@@ -1,11 +1,14 @@
 package wj.baedal.market.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Menu {
 
     @Id @GeneratedValue
@@ -21,10 +24,19 @@ public class Menu {
     private Store store;
 
 
-    public Menu(String name,int price,Store store){
+    protected Menu(String name,int price,Store store){
         this.name = name;
         this.price = price;
         this.store = store;
-        store.getMenuList().add(this);
+    }
+
+    /**
+     * 메뉴 생성 메서드
+     * */
+
+    public static Menu createMenu(String name,int price,Store store){
+        Menu menu = new Menu(name,price,store);
+        store.getMenuList().add(menu);
+        return menu;
     }
 }

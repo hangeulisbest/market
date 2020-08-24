@@ -21,24 +21,26 @@ public class Store {
 
     private String name;
 
-    @OneToMany(mappedBy = "store",cascade = CascadeType.ALL)
-    private List<CategoryStore> categoryStoreList = new ArrayList<>();
-
     @Embedded
     private Address address;
+
+    @OneToMany(mappedBy = "store",cascade = CascadeType.ALL)
+    private List<CategoryStore> categoryStoreList = new ArrayList<>();
 
     @OneToMany(mappedBy = "store" , cascade = CascadeType.ALL)
     private List<Menu> menuList = new ArrayList<>();
 
 
-    public Store(Address address,String name){
+    protected Store(Address address,String name){
         this.address = address;
         this.name = name;
     }
 
-    public void addCategory(Category category){
-        CategoryStore categoryStore = new CategoryStore(category,this);
-        this.categoryStoreList.add(categoryStore);
+    // Store 생성 메서드
+
+    public static Store createStore(Address address,String name){
+        Store store = new Store(address,name);
+        return store;
     }
 
 }

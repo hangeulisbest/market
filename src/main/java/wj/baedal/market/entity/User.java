@@ -22,9 +22,14 @@ public class User {
     private Address address;
 
 
-    public User(String name,Address address){
+    protected User(String name,Address address){
         this.name = name;
         this.address = address;
+    }
+
+    public static User createUser(String name,Address address){
+        User user = new User(name,address);
+        return user;
     }
 
 }

@@ -25,4 +25,24 @@ public class Delivery {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 
+
+    /**
+     * 생성 메서드
+     * */
+
+    public Delivery(Address address){
+        this.address = address;
+        this.deliveryStatus = DeliveryStatus.READY;
+    }
+
+
+    /**
+     * 전용 메서드
+     * */
+
+    public void addOrder(Order order){
+        this.order =order;
+    }
+
+
 }

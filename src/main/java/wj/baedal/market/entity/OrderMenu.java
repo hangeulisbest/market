@@ -17,6 +17,11 @@ public class OrderMenu {
     @Column(name = "orderMenu_id")
     private Long id;
 
+    /**
+     * 메뉴 주문 개수
+     * */
+    private int count;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
@@ -25,10 +30,28 @@ public class OrderMenu {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    public OrderMenu(Order order, Menu menu){
-        this.order = order;
+    protected OrderMenu(Menu menu,int count){
         this.menu = menu;
+        this.count = count;
     }
+
+
+    /**
+     *  생성 메서드
+     * */
+
+    public static OrderMenu createOrderMenu(Menu menu,int count){
+        return new OrderMenu(menu,count);
+    }
+
+    /**
+     *  오더메뉴 전용 메서드
+     * */
+
+    public void addOrder(Order order){
+        this.order = order;
+    }
+
 
 
 }

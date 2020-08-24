@@ -29,11 +29,27 @@ public class Category {
 
 
     @OneToMany(mappedBy = "category")
-    private List<CategoryStore> categoryStore= new ArrayList<>();
+    private List<CategoryStore> categoryStoreList= new ArrayList<>();
 
-    public Category(String name){
+
+    protected Category(String name){
         this.name = name;
     }
+
+    /**
+     * 생성 메서드
+     *
+     */
+    public static Category createCategory(String name){
+        Category category = new Category(name);
+        return category;
+    }
+
+
+    /**
+     *  양방향 연관관계 매핑
+     *
+     */
 
     public void setParent(Category parent){
         this.parent = parent;

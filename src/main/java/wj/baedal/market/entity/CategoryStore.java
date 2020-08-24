@@ -1,6 +1,7 @@
 package wj.baedal.market.entity;
 
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CategoryStore {
 
     @Id @GeneratedValue
@@ -23,8 +24,23 @@ public class CategoryStore {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    public CategoryStore(Category category,Store store){
+    protected CategoryStore(Category category,Store store){
         this.category = category;
         this.store =store;
+    }
+
+    /**
+     *
+     * 생성 메서드
+     *
+     * 카테고리와 가게를 연결하는 작업
+     * 양방향 연관관계 메서드 추가
+     *
+    */
+    public static CategoryStore createCategoryStore(Category category,Store store){
+        CategoryStore categoryStore = new CategoryStore(category,store);
+        store.getCategoryStoreList().add(categoryStore);
+        category.getCategoryStoreList().add(categoryStore);
+        return categoryStore;
     }
 }
