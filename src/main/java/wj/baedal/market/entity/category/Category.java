@@ -1,17 +1,23 @@
-package wj.baedal.market.entity;
+package wj.baedal.market.entity.category;
 
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wj.baedal.market.entity.categorystore.CategoryStore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Getter
+
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "CATEGORY_NAME_UNIQUE",columnNames = {"NAME"})
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Entity
 public class Category {
 
     @Id @GeneratedValue

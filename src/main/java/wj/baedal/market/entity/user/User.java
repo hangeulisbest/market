@@ -1,9 +1,10 @@
-package wj.baedal.market.entity;
+package wj.baedal.market.entity.user;
 
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wj.baedal.market.entity.Address;
 
 import javax.persistence.*;
 
@@ -32,4 +33,8 @@ public class User {
         return user;
     }
 
+    public void updateAddress(String city,String street,String zipcode){
+        Address address = new Address(city,street,zipcode);
+        this.address = address;
+    }
 }

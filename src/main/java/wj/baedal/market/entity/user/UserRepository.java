@@ -1,9 +1,11 @@
-package wj.baedal.market.repository;
+package wj.baedal.market.entity.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import wj.baedal.market.entity.User;
+
+import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
+    List<User> findByName(String name);
 }

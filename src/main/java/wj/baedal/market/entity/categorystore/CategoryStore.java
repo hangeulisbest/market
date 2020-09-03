@@ -1,9 +1,11 @@
-package wj.baedal.market.entity;
+package wj.baedal.market.entity.categorystore;
 
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wj.baedal.market.entity.store.Store;
+import wj.baedal.market.entity.category.Category;
 
 import javax.persistence.*;
 
@@ -24,7 +26,7 @@ public class CategoryStore {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    protected CategoryStore(Category category,Store store){
+    protected CategoryStore(Category category, Store store){
         this.category = category;
         this.store =store;
     }
@@ -41,6 +43,9 @@ public class CategoryStore {
         CategoryStore categoryStore = new CategoryStore(category,store);
         store.getCategoryStoreList().add(categoryStore);
         category.getCategoryStoreList().add(categoryStore);
+        if(category.getParent()!=null) {
+            CategoryStore.createCategoryStore(category.getParent(),store);
+        }
         return categoryStore;
     }
 }

@@ -1,9 +1,14 @@
-package wj.baedal.market.entity;
+package wj.baedal.market.entity.order;
 
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wj.baedal.market.entity.DeliveryStatus;
+import wj.baedal.market.entity.ordermenu.OrderMenu;
+import wj.baedal.market.entity.OrderStatus;
+import wj.baedal.market.entity.user.User;
+import wj.baedal.market.entity.delivery.Delivery;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -48,7 +53,7 @@ public class Order {
      *
      * */
 
-    public static Order createOrder(User user,Delivery delivery,OrderMenu... orderMenuList){
+    public static Order createOrder(User user,Delivery delivery,List<OrderMenu> orderMenuList){
             Order order = new Order();
             order.user = user;
             order.delivery = delivery;
@@ -59,6 +64,12 @@ public class Order {
             order.orderStatus= OrderStatus.ORDER;
             order.orderDate = LocalDateTime.now();
             return order;
+    }
+
+    public void cancel(){
+        if(delivery.getDeliveryStatus().equals(DeliveryStatus.READY)){
+            orderStatus = OrderStatus.CANCEL;
+        }
     }
 
 }

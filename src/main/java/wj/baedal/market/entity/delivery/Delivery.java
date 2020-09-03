@@ -1,9 +1,12 @@
-package wj.baedal.market.entity;
+package wj.baedal.market.entity.delivery;
 
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wj.baedal.market.entity.Address;
+import wj.baedal.market.entity.DeliveryStatus;
+import wj.baedal.market.entity.order.Order;
 
 import javax.persistence.*;
 
@@ -30,11 +33,15 @@ public class Delivery {
      * 생성 메서드
      * */
 
-    public Delivery(Address address){
+    protected Delivery(Address address){
         this.address = address;
         this.deliveryStatus = DeliveryStatus.READY;
     }
 
+    static public Delivery createDelivery(Address address){
+        Delivery delivery = new Delivery(address);
+        return delivery;
+    }
 
     /**
      * 전용 메서드
@@ -42,6 +49,10 @@ public class Delivery {
 
     public void addOrder(Order order){
         this.order =order;
+    }
+
+    public void completeDelivery(){
+        this.deliveryStatus = DeliveryStatus.COMPLETE;
     }
 
 

@@ -1,10 +1,11 @@
-package wj.baedal.market.entity;
+package wj.baedal.market.entity.ordermenu;
 
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.boot.model.naming.ImplicitNameSource;
+import wj.baedal.market.entity.menu.Menu;
+import wj.baedal.market.entity.order.Order;
 
 import javax.persistence.*;
 

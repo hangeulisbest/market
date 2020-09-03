@@ -1,8 +1,9 @@
-package wj.baedal.market.entity;
+package wj.baedal.market.entity.menu;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wj.baedal.market.entity.store.Store;
 
 import javax.persistence.*;
 
@@ -24,14 +25,14 @@ public class Menu {
     private Store store;
 
 
-    protected Menu(String name,int price,Store store){
+    public Menu(String name,int price,Store store){
         this.name = name;
         this.price = price;
         this.store = store;
     }
 
     /**
-     * 메뉴 생성 메서드
+     * 메뉴 생성 메서드 (store에 의존적임)
      * */
 
     public static Menu createMenu(String name,int price,Store store){
