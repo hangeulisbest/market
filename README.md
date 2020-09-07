@@ -13,11 +13,39 @@
 2. Response 는 해당 API를 호출한 RESPONSE 입니다.
 
 
-# API 호출 테이블  
-|CATEGORY|
+# Category API 테이블  
+
 |METHOD|URL|DESCRIPTION|
 |:---:|:-------:|:-------------:|
 |POST|/api/v1/categories|카테고리 저장|
 |GET|/api/v1/categories|모든 카테고리 조회|
 |PUT|/api/v1/categories/{id}|카테고리의 이름 수정|
 |DELETE|/api/v1/categories/{id}|카테고리 삭제(만약 참조하는 가게가 있다면 삭제안됨)|
+
+
+# Order API 테이블
+
+|METHOD|URL|DESCRIPTION|
+|:---:|:-------:|:-------------:|
+|POST|/api/v1/orders|주문 저장|
+|GET|/api/v1/orders|주문 검색|
+|DELETE|/api/v1/orders/{id}|주문 취소|
+
+# Store API 테이블
+
+|METHOD|URL|DESCRIPTION|
+|:---:|:-------:|:-------------:|
+|POST|/api/v1/stores|가게 저장|
+|PUT|/api/v1/stores/{id}|가게 정보 수정|
+|GET|/api/v1/stores/{id}|가게 한개 정보 조회|
+|GET|/api/v3/stores|모든 가게 정보 조회|
+
+# User API 테이블
+
+|METHOD|URL|DESCRIPTION|
+|:---:|:-------:|:-------------:|
+|POST|/api/v1/users|유저 저장|
+|GET|/api/v1/users|모든 유저 조회|
+|GET|/api/v1/users/{id}|1명의 유저 조회|
+|PUT|/api/v1/users/{id}|유저 정보 수정|
+|DELETE|/api/v1/users/{id}|유저 삭제|
