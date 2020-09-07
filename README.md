@@ -3,33 +3,33 @@
 
 
 ## 디렉토리로 보는 도메인 구조
-entity/
-    category/
-        Category.java
-        CategoryRepository.java
-    categoryStore/
-        CategoryStore.java
-        CategoryStroeRepository.java
-    delivery/
-        Delivery.java
-    menu/
-        Menu.java
-        MenuRepository.java
-    order/
-        Order.java
-        OrderRepository.java
-    ordermenu/
-        OrderMenu.java
-        OrderMenuRepository.java
-    store/
-        Store.java
-        StoreRepository.java
-    user/
-        User.java
-        UserRepository.java
-    Address.java
-    DeliveryStatus.java
-    OrderStatus.java
+entity/    
+    category/    
+        Category.java    
+        CategoryRepository.java    
+    categoryStore/    
+        CategoryStore.java    
+        CategoryStroeRepository.java    
+    delivery/    
+        Delivery.java    
+    menu/    
+        Menu.java    
+        MenuRepository.java    
+    order/    
+        Order.java    
+        OrderRepository.java    
+    ordermenu/    
+        OrderMenu.java    
+        OrderMenuRepository.java    
+    store/     
+        Store.java  
+        StoreRepository.java  
+    user/  
+        User.java   
+        UserRepository.java  
+    Address.java  
+    DeliveryStatus.java   
+    OrderStatus.java   
 
 ## Controller 코드 설명
 
