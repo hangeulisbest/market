@@ -14,7 +14,7 @@
 
 
 # API 호출 테이블  
-
+|CATEGORY|
 |METHOD|URL|DESCRIPTION|
 |:---:|:-------:|:-------------:|
 |POST|/api/v1/categories|카테고리 저장|
