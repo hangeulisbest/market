@@ -11,6 +11,11 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
+    /**
+     *  OrderSearchRepository 로 직접 쿼리로 만듬.
+     *  아래의 findById 와 findAllDesc 는 deprecated !!!
+     * */
+
     @Override
     @EntityGraph(attributePaths = {"orderMenuList"})
     Optional<Order> findById(Long aLong);

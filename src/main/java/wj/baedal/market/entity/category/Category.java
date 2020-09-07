@@ -62,4 +62,13 @@ public class Category {
         parent.child.add(this);
     }
 
+    /**
+     * 전용 메서드
+     *
+     * */
+
+    public void changeName(String name){
+        this.name=name;
+    }
+
 }

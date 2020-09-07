@@ -50,6 +50,8 @@ public class Store {
         Store store = new Store(address,name);
         return store;
     }
+
+
 //
 //    public void addMenu(String name,int price){
 //        Menu menu = Menu.createMenu(name,price,this);

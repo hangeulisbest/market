@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class OrderMenuRequestDto {
 
+    // 메뉴의 아이디
     private Long menuId;
+
+    // 몇개의 메뉴를 주문했는지
     private int count;
 
     @Builder

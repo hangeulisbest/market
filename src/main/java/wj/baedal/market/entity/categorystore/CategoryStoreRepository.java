@@ -13,9 +13,11 @@ import java.util.List;
 public interface CategoryStoreRepository extends JpaRepository<CategoryStore,Long> {
 
 
+    /** Store로 검색하면 주로 category를 많이 조회하므로 category도 같이 조인함 */
     @EntityGraph(attributePaths = {"category"})
     List<CategoryStore> findCategoryStoreByStore(Store store);
 
+    /** category로 검색하면 주로 store를 많이 조회하므로 store도 같이 조인함 */
     @EntityGraph(attributePaths = {"store"})
     List<CategoryStore> findCategoryStoreByCategory(Category category);
 }

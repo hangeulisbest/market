@@ -66,6 +66,9 @@ public class Order {
             return order;
     }
 
+    /**
+     * 주문 취소 메서드
+     * */
     public void cancel(){
         if(delivery.getDeliveryStatus().equals(DeliveryStatus.READY)){
             orderStatus = OrderStatus.CANCEL;

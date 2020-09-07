@@ -43,6 +43,15 @@ public class StoreSearchRepository {
 
 
     public List<StoreSearchResponseDto> searchStoreQueryDSL(StoreSearchCondition searchCondition){
+
+        /**
+         * categoryStore를 기준으로 category는 다대일 이며,
+         * store 역시 다대일이다.
+         * 따라서 fetch join으로 다 가져올 수 있다.
+         *
+         * where 문으로 가게 이름과 카테고리 이름에 관한 검색조건을 적용한다.
+         *
+         * */
         List<CategoryStore> searhCategoryStoreList = queryFactory.selectFrom(categoryStore)
                 .leftJoin(categoryStore.category, category).fetchJoin()
                 .leftJoin(categoryStore.store, store).fetchJoin()
@@ -50,11 +59,23 @@ public class StoreSearchRepository {
                         ,categoryNameEq(searchCondition.getCategoryName()))
                 .fetch();
 
+
+        /**
+         *  menu를 기준으로 store는 다대일이므로
+         *  모든 메뉴와 함께 가게의 정보도 함께 가져올 수 있다.
+         *
+         *  where 문으로 가게이름에 관한 검색조건을 적용한다.
+         * */
         List<Menu> searhMenuList = queryFactory.selectFrom(menu)
                 .leftJoin(menu.store, store).fetchJoin()
                 .where(storeNameEq(searchCondition.getStoreName()))
                 .fetch();
 
+
+        /**
+         *  중복되지 않는 Store만 모으기 위해,
+         *  categoryStore 에서 스트림을 형성하여 Store를 Set에 담아둔다.
+         * */
         Set<Store> storeList = searhCategoryStoreList.stream()
                 .map(o -> o.getStore())
                 .collect(Collectors.toSet());
@@ -63,6 +84,10 @@ public class StoreSearchRepository {
         return storeList.stream().map(
                 o->StoreSearchResponseDto.builder()
                 .categoryList(
+                        /**
+                         *  가게 하나당 여러개의 카테고리를 가질 수 있다.
+                         *  가게 하나에 해당하는 모든 category를 DTO로 변환하는 작업
+                         * */
                         searhCategoryStoreList.stream().filter(x->x.getStore().getId()==o.getId()).map(
                                 x->CategoryResponseDto.builder()
                                         .id(x.getCategory().getId())
@@ -72,6 +97,11 @@ public class StoreSearchRepository {
                         ).collect(Collectors.toList())
                 )
                 .menuList(
+                        /**
+                         *  가게 하나당 여러개의 메뉴를 가질 수 있다.
+                         *  가게 하나에 해당하는 모든 메뉴들을 DTO로 변환하는 작업
+                         *
+                         * */
                         searhMenuList.stream().filter(x->x.getStore().getId()==o.getId()).map(
                                 x->MenuResponseDto.builder()
                                         .id(x.getId())

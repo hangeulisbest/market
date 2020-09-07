@@ -17,20 +17,76 @@ public class OrderApiController {
 
     private final OrderService orderService;
 
+    /**
+     * 주문 저장
+     *
+     * Request
+     * {
+     *     "userId": Long,
+     *     "deliveryCity": String,
+     *     "deliveryStreet": String,
+     *     "deliveryZipcode": String,
+     *     "orderMenuList" : [
+     *              {
+     *                  "menuId" : Long,
+     *                  "count" : Integer
+     *              },
+     *              ...
+     *     ]
+     * }
+     *
+     * Response
+     * Long(저장된 주문의 아이디)
+     * */
     @PostMapping("/api/v1/orders")
     public Long save(@RequestBody OrderSaveRequestDto requestDto){
         return orderService.save(requestDto);
     }
 
 
+    /**
+     * 주문 검색(페이징 x)
+     *
+     * Request
+     * {
+     *     "userId": Long,
+     *     "orderStatus": String
+     * }
+     *
+     * Response
+     * {
+     *     "count": int,
+     *     "data" : [
+     *          {
+     *              "orderId" : Long,
+     *              "userId" : Long,
+     *              "userName" : String,
+     *              "orderDate" : LocalDateTime,
+     *              "orderMenuList" : [
+     *                      {
+     *                          "menuId" : Long,
+     *                          "count" : int
+     *                      },
+     *                      ...
+     *              ],
+     *              "city" : String,
+     *              "street" : String,
+     *              "zipcode" : String,
+     *              "orderStatus" : String
+     *          },
+     *          ...
+     *     ]
+     * }
+     * */
     @GetMapping("/api/v1/orders")
     public OrderListResponseDto searchOrderQueryDSL(@RequestBody OrderSearchCondition searchCondition){
-        List<OrderResponseDto> orderResponseDtos = orderService.searchOrderQueryDSL(searchCondition);
-        return OrderListResponseDto.builder()
-                .data(orderResponseDtos)
-                .count(orderResponseDtos.size())
-                .build();
+        return orderService.searchOrderQueryDSL(searchCondition);
+
     }
+
+    /**
+     * 주문 취소 ( 주문 레코드를 삭제하는 것이 아닌 OrderStatus를 Cancel로 바꿈 )
+     * */
     @DeleteMapping("/api/v1/orders/{id}")
     public Long deleteOrder(@PathVariable Long id){
         orderService.delete(id);

@@ -16,6 +16,11 @@ public interface StoreRepository extends JpaRepository<Store,Long> {
     @EntityGraph(attributePaths = {"menuList"})
     Optional<Store> findByName(String name);
 
+
+    /**
+     *  findAll 은 StoreSearchRepository 에서 직접 쿼리하는 것으로 바꿈
+     *  아래의 findALL 은 deprecated !!
+     * */
     @Override
     @EntityGraph(attributePaths = {"categoryStoreList"})
     List<Store> findAll();

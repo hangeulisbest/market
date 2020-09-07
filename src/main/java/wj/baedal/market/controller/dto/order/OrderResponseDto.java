@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderResponseDto<T> {
 
-    //주문 정보
+    //주문 정보 아이디
     private Long orderId;
 
     // 유저 정보
