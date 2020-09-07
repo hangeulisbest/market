@@ -4,32 +4,32 @@
 
 ## 디렉토리로 보는 도메인 구조
 entity/    
-    category/    
-        Category.java    
-        CategoryRepository.java    
-    categoryStore/    
-        CategoryStore.java    
-        CategoryStroeRepository.java    
-    delivery/    
-        Delivery.java    
-    menu/    
-        Menu.java    
-        MenuRepository.java    
-    order/    
-        Order.java    
-        OrderRepository.java    
-    ordermenu/    
-        OrderMenu.java    
-        OrderMenuRepository.java    
-    store/     
-        Store.java  
-        StoreRepository.java  
-    user/  
-        User.java   
-        UserRepository.java  
-    Address.java  
-    DeliveryStatus.java   
-    OrderStatus.java   
+&nbsp;&nbsp;&nbsp;&nbsp;category/    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      Category.java    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        CategoryRepository.java    
+&nbsp;&nbsp;&nbsp;&nbsp;    categoryStore/    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        CategoryStore.java    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        CategoryStroeRepository.java    
+&nbsp;&nbsp;&nbsp;&nbsp;    delivery/    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        Delivery.java    
+&nbsp;&nbsp;&nbsp;&nbsp;   menu/    
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       Menu.java    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        MenuRepository.java    
+&nbsp;&nbsp;&nbsp;&nbsp;    order/    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        Order.java    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        OrderRepository.java    
+&nbsp;&nbsp;&nbsp;&nbsp;    ordermenu/    
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       OrderMenu.java    
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       OrderMenuRepository.java    
+ &nbsp;&nbsp;&nbsp;&nbsp;   store/     
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      Store.java  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     StoreRepository.java  
+   &nbsp;&nbsp;&nbsp;&nbsp; user/  
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     User.java   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      UserRepository.java  
+ &nbsp;&nbsp;&nbsp;&nbsp;   Address.java  
+ &nbsp;&nbsp;&nbsp;&nbsp;   DeliveryStatus.java   
+ &nbsp;&nbsp;&nbsp;&nbsp;   OrderStatus.java   
 
 ## Controller 코드 설명
 
