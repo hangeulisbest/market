@@ -1,0 +1,47 @@
+{{>layout/header}}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-mid-12 text-center">
+            <h1> 회원 검색</h1>
+            <br><br>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center col-md-4 col-md-offset-4">
+            <form>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">이름</label>
+                    <input type="text" class="form-control" id="name" placeholder="이름을 입력하세요.">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">도시</label>
+                    <input type="text" class="form-control" id="city" placeholder="도시를 입력하세요.">
+                </div>
+                <button type="button" class="btn btn-primary" id="btn-user-search">검색</button>
+                <a href="/" role="button" class="btn btn-default">돌아가기</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+<table class="table table-horizontal table-bordered">
+    <thead class="thead-strong">
+    <tr>
+        <th>아아디</th>
+        <th>이름</th>
+        <th>시</th>
+        <th>동</th>
+        <th>우편번호</th>
+    </tr>
+    <tbody id="tbody"></tbody>
+</table>
+
+<table class="table table-horizontal table-bordered">
+    <thead class="thead-strong">
+    <tr id = "paging">
+    </tr>
+</table>
+
+
+{{>layout/footer}}

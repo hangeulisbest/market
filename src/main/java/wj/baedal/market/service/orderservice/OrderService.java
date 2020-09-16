@@ -2,6 +2,8 @@ package wj.baedal.market.service.orderservice;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wj.baedal.market.controller.dto.order.OrderListResponseDto;
@@ -116,5 +118,12 @@ public class OrderService {
 
     }
 
+    /**
+     *  주문 검색 + 페이징
+     * */
 
+    @Transactional(readOnly = true)
+    public Page<OrderResponseDto> searchOrder(Pageable pageable, OrderSearchCondition searchCondition) {
+        return orderSearchRepository.searchOrder(pageable,searchCondition);
+    }
 }

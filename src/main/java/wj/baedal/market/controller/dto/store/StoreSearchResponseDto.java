@@ -1,6 +1,7 @@
 package wj.baedal.market.controller.dto.store;
 
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class StoreSearchResponseDto {
     private List<CategoryResponseDto> categoryList;
 
     @Builder
+    @QueryProjection
     public StoreSearchResponseDto(Long id, String name, String city, String street, String zipcode, List<MenuResponseDto> menuList, List<CategoryResponseDto> categoryList) {
         this.id = id;
         this.name = name;

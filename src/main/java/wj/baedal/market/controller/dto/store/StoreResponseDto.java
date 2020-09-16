@@ -1,6 +1,7 @@
 package wj.baedal.market.controller.dto.store;
 
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

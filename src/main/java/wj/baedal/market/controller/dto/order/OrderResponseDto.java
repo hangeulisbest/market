@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class OrderResponseDto<T> {
+public class OrderResponseDto {
 
     //주문 정보 아이디
     private Long orderId;

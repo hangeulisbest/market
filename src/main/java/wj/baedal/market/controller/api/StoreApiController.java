@@ -2,6 +2,10 @@ package wj.baedal.market.controller.api;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import wj.baedal.market.controller.dto.store.*;
 import wj.baedal.market.repository.store.StoreSearchCondition;
@@ -45,7 +49,6 @@ public class StoreApiController {
      *     "categoryName" : String,
      *     "menuList" : [
      *          {
-     *             "id" : Long,
      *             "name" : String,
      *             "price" : int
      *          },
@@ -82,37 +85,40 @@ public class StoreApiController {
      * {
      *     "count" : int,
      *     "data" : [
-     *          "id" : Long,
-     *          "name" : String,
-     *          "city" : String,
-     *          "street" : String,
-     *          "zipcode" : String,
-     *          "menuList" : [
-     *              {
-     *                  "id" : Long,
-     *                  "name" : String,
-     *                  "price" : int
-     *              },
-     *              ...
-     *          ],
-     *          "categoryList" : [
-     *              {
-     *                  "id" : Long,
-     *                  "name" : String,
-     *                  "parent" : String
-     *              },
-     *              ...
-     *          ]
+     *         {
+     *              "id" : Long,
+     *              "name" : String,
+     *              "city" : String,
+     *              "street" : String,
+     *              "zipcode" : String,
+     *          }
      *     ]
      *
      * }
      *
      * */
-    @GetMapping("/api/v3/stores")
+    @PostMapping("/api/v3/stores")
     public StoreSearchListResponseDto findAllQueryDSL(@RequestBody StoreSearchCondition searchCondition){
         return storeService.findALLQueryDSL(searchCondition);
     }
 
+
+    /**
+     * Request & Response 는 /api/b3/stores 와 같음
+     *
+     * v3 에서 paging을 추가함
+     * */
+
+    @PostMapping("/api/v4/stores")
+    public Page<StoreSearchResponseDto> searchStore(@PageableDefault(sort = {"name"},value = 5)Pageable pageable,@RequestBody StoreSearchCondition condition){
+        return storeService.searchStore(pageable,condition);
+    }
+
+    @PostMapping("/api/v5/stores")
+    public Page<StoreSummaryResponseDto> searchStoreV5(@PageableDefault(sort = {"name"},value = 5)Pageable pageable
+    ,@RequestBody StoreSearchCondition searchCondition){
+        return storeService.searchStoreV5(pageable,searchCondition);
+    }
 
 
     /**

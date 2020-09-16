@@ -1,6 +1,7 @@
 package wj.baedal.market.controller.dto.user;
 
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +13,7 @@ public class UserResponseDto {
     private String street;
     private String zipcode;
 
+    @Builder
     public UserResponseDto(Long id,String name, String city, String street, String zipcode) {
         this.id = id;
         this.name = name;

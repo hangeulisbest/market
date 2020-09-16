@@ -2,14 +2,21 @@ package wj.baedal.market.service.userservice;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wj.baedal.market.controller.dto.user.UserListResponseDto;
 import wj.baedal.market.controller.dto.user.UserResponseDto;
 import wj.baedal.market.controller.dto.user.UserSaveRequestDto;
 import wj.baedal.market.controller.dto.user.UserUpdateRequestDto;
+import wj.baedal.market.entity.order.Order;
+import wj.baedal.market.entity.order.OrderRepository;
 import wj.baedal.market.entity.user.User;
 import wj.baedal.market.entity.user.UserRepository;
+import wj.baedal.market.repository.user.UserSearchCondition;
+import wj.baedal.market.repository.user.UserSearchRepository;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +26,8 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final OrderRepository orderRepository;
+    private final UserSearchRepository userSearchRepository;
 
     /**
      *  유저 정보 저장
@@ -52,6 +60,11 @@ public class UserService {
                 .count(collect.size())
                 .data(collect)
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserResponseDto> searchUser(Pageable pageable, UserSearchCondition condition){
+        return userSearchRepository.searchUser(pageable, condition);
     }
 
 
@@ -105,6 +118,12 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(()->{
             throw new IllegalArgumentException("해당 유저가 없습니다.");
         });
+
+        /**
+         *  주문을 한 유저라면 삭제할 수 없다. 무결성 제약 조건!
+         * */
+        List<Order> orderList = orderRepository.findByUser(user);
+        if(orderList.size()>0 ) throw new IllegalArgumentException("주문을 한 유저는 삭제할 수 없습니다.");
         userRepository.delete(user);
     }
 }

@@ -1,7 +1,6 @@
 spring:
   profiles:
     active: local
-
   datasource:
     url: jdbc:h2:tcp://localhost/~/baedalmarket
     username: sa

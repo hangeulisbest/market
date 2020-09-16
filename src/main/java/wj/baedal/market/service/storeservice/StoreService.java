@@ -2,6 +2,8 @@ package wj.baedal.market.service.storeservice;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wj.baedal.market.controller.dto.category.CategoryListResponseDto;
@@ -16,6 +18,8 @@ import wj.baedal.market.entity.categorystore.CategoryStore;
 import wj.baedal.market.entity.categorystore.CategoryStoreRepository;
 import wj.baedal.market.entity.menu.Menu;
 import wj.baedal.market.entity.menu.MenuRepository;
+import wj.baedal.market.entity.ordermenu.OrderMenu;
+import wj.baedal.market.entity.ordermenu.OrderMenuRepository;
 import wj.baedal.market.entity.store.Store;
 import wj.baedal.market.entity.store.StoreRepository;
 import wj.baedal.market.repository.store.StoreSearchCondition;
@@ -31,6 +35,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final CategoryRepository categoryRepository;
     private final CategoryStoreRepository categoryStoreRepository;
+    private final OrderMenuRepository orderMenuRepository;
     private final MenuRepository menuRepository;
     private final StoreSearchRepository storeSearchRepository;
 
@@ -77,6 +82,12 @@ public class StoreService {
 
         /** 해당 가게이름을 가진 모든 메뉴를 가져와서 삭제 */
         List<Menu> menuList = menuRepository.findByStore(store);
+        List<OrderMenu> ordermenus = orderMenuRepository.findAll();
+        for(OrderMenu orderMenu : ordermenus){
+           if(menuList.contains(orderMenu.getMenu())){
+               throw new IllegalArgumentException("주문된 메뉴가 포함된 가게는 수정할 수 없습니다.");
+           }
+        }
         menuList.stream().forEach(o->
                 menuRepository.delete(o)
         );
@@ -113,6 +124,23 @@ public class StoreService {
 
 
 
+    @Transactional(readOnly = true)
+    public StoreSearchResponseDto findById2(Long id){
+        return storeSearchRepository.findById2(id);
+    }
+
+    public Page<StoreSummaryResponseDto> searchStoreV5(Pageable pageable, StoreSearchCondition searchCondition) {
+        return storeSearchRepository.searchStoreV5(pageable,searchCondition);
+    }
+
+    /**
+     *  사용 X
+     * */
+
+    @Transactional(readOnly = true)
+    public Page<StoreSearchResponseDto> searchStore(Pageable pageable, StoreSearchCondition condition) {
+        return storeSearchRepository.searchStore(pageable,condition);
+    }
 
     /**
      * 사용 X

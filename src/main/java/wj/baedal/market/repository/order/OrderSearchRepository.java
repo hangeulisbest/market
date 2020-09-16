@@ -1,7 +1,11 @@
 package wj.baedal.market.repository.order;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import wj.baedal.market.controller.dto.order.OrderResponseDto;
@@ -35,6 +39,7 @@ public class OrderSearchRepository {
         this.em = em;
         this.queryFactory = new JPAQueryFactory(em);
     }
+
 
     public List<OrderResponseDto> searchOrderQueryDSL(OrderSearchCondition searchCondition){
 
@@ -109,6 +114,74 @@ public class OrderSearchRepository {
 
     /** 주문상테가 null 이라면 null 을 반환하며 아니면 같은지 다른지 boolean으로 반환*/
     public BooleanExpression orderStatusEq(OrderStatus status){
-        return status.equals(null) ?null: order.orderStatus.eq(status);
+        if (status!=null){
+            return order.orderStatus.eq(status);
+        }
+        return null;
+    }
+
+    public Page<OrderResponseDto> searchOrder(Pageable pageable, OrderSearchCondition searchCondition){
+
+
+        /**
+         *  order 와 menu 의 중간 다리인 orderMenu를 기준으로 가져옵니다.
+         *  orderMenu하나당 하나의 order와 menu 를 가지기 때문입니다.
+         * */
+        List<OrderMenu> orderMenuList = queryFactory.selectFrom(orderMenu)
+                .leftJoin(orderMenu.order, order).fetchJoin()
+                .leftJoin(order.user, user).fetchJoin()
+                .leftJoin(order.delivery, delivery).fetchJoin()
+                .where(orderStatusEq(searchCondition.getOrderStatus()),
+                        userIdEq(searchCondition.getUserId()))
+                .fetch();
+
+        /**
+         *  검색조건에 해당하는 모든 order를 페이징한 결과를 가져옵니다.
+         * */
+        QueryResults<Order> orderResults = queryFactory.selectFrom(order)
+                .leftJoin(order.user,user).fetchJoin()
+                .leftJoin(order.delivery, delivery).fetchJoin()
+                .where(orderStatusEq(searchCondition.getOrderStatus()),
+                        userIdEq(searchCondition.getUserId()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        /** 페이징 결과를 리스트로 반환합니다 */
+        List<Order> content = orderResults.getResults();
+
+        long total = orderResults.getTotal();
+
+
+        /**
+         * List<Order>를 List<OrderResponseDto>로 변환합니다.
+         *
+         * */
+        List<OrderResponseDto> collectContent = content.stream().map(
+                o -> OrderResponseDto.builder()
+                        .orderId(o.getId())
+                        .username(o.getUser().getName())
+                        .userId(o.getUser().getId())
+                        .city(o.getDelivery().getAddress().getCity())
+                        .street(o.getDelivery().getAddress().getStreet())
+                        .zipcode(o.getDelivery().getAddress().getZipcode())
+                        .orderDate(o.getOrderDate())
+                        .orderStatus(o.getOrderStatus())
+                        .orderMenuList(
+                                /**
+                                 * 각각의 주문에 대해서 주문 하나당 가지고 있는 주문 메뉴리스트를 추가하는 과정
+                                 * 주문 메뉴 리스트는 무엇을 주문했는 지와 몇개를 주문했는지에 관한 정보가 들어간다
+                                 * */
+                                orderMenuList.stream().filter(x -> x.getOrder().getId() == o.getId())
+                                        .map(
+                                                x -> OrderMenuResponseDto.builder()
+                                                        .count(x.getCount())
+                                                        .menuId(x.getMenu().getId())
+                                                        .build()
+                                        ).collect(Collectors.toList())
+                        ).build()
+        ).collect(Collectors.toList());
+
+        return new PageImpl<>(collectContent,pageable,total);
     }
 }

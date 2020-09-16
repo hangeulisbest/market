@@ -2,6 +2,9 @@ package wj.baedal.market.controller.api;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import wj.baedal.market.controller.dto.order.OrderListResponseDto;
 import wj.baedal.market.controller.dto.order.OrderResponseDto;
@@ -82,6 +85,12 @@ public class OrderApiController {
     public OrderListResponseDto searchOrderQueryDSL(@RequestBody OrderSearchCondition searchCondition){
         return orderService.searchOrderQueryDSL(searchCondition);
 
+    }
+
+    @GetMapping("/api/v2/orders")
+    public Page<OrderResponseDto> searchOrder(@PageableDefault(sort = {"orderStatus"})Pageable pageable,
+                                              @RequestBody OrderSearchCondition searchCondition){
+        return orderService.searchOrder(pageable,searchCondition);
     }
 
     /**
