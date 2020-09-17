@@ -26,7 +26,8 @@ public class StoreApiController {
      *      "name" : String,
      *      "city" : String,
      *      "street": String,
-     *      "zipcode" : String
+     *      "zipcode" : String,
+     *      "category" : String,
      * }
      *
      * Response

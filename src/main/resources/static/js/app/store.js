@@ -20,7 +20,8 @@ var store_main = {
             name : $('#name').val(),
             city : $('#city').val(),
             street : $('#street').val(),
-            zipcode : $('#zipcode').val()
+            zipcode : $('#zipcode').val(),
+            category : $('#category').val()
         };
 
         $.ajax({

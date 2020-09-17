@@ -11,6 +11,7 @@ import wj.baedal.market.controller.dto.order.OrderResponseDto;
 import wj.baedal.market.controller.dto.order.OrderSaveRequestDto;
 import wj.baedal.market.controller.dto.order.OrderSummaryResponseDto;
 import wj.baedal.market.entity.Address;
+import wj.baedal.market.entity.DeliveryStatus;
 import wj.baedal.market.entity.delivery.Delivery;
 import wj.baedal.market.entity.menu.Menu;
 import wj.baedal.market.entity.menu.MenuRepository;
@@ -117,6 +118,9 @@ public class OrderService {
                 () -> new IllegalArgumentException("해당 주문이 없습니다.")
         );
 
+        if(order.getDelivery().getDeliveryStatus()== DeliveryStatus.COMPLETE){
+            throw new  IllegalArgumentException("배달 완료된 주문은 취소할 수 없습니다.");
+        }
         /** 주문 객체 자체의 메소드로 orderStatus 를 CANCEL로 변경 */
         order.cancel();
 

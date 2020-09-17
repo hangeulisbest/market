@@ -26,6 +26,7 @@ import wj.baedal.market.repository.store.StoreSearchCondition;
 import wj.baedal.market.repository.store.StoreSearchRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -41,6 +42,11 @@ public class StoreService {
 
     @Transactional
     public Long save(StoreSaveRequestDto requestDto){
+
+        if(requestDto.getCategory().equals("") || requestDto.getCategory()==null){
+            throw new IllegalArgumentException("카테고리는 필수 입니다.");
+        }
+
         /** Store 를 static 생성 메서드로 생성
          *  새로운 주소(도시,거리,우편번호) 와 가게의 이름을 넘겨주면 됨.
          * */
@@ -50,7 +56,28 @@ public class StoreService {
                         requestDto.getZipcode()),
                 requestDto.getName()
         );
+
+        /**
+         *  카테고리가 존재하지 않을 수 있음!
+         * */
+        Optional<Category> category = categoryRepository.findByName(requestDto.getCategory());
+
+        /** 가게 저장*/
         storeRepository.save(store);
+
+        /**
+         *  카테고리가 존재한다면 기존의 카테고리와 가게를 연결함.
+         * */
+        if(category.isPresent()){
+            CategoryStore.createCategoryStore(category.get(),store);
+        }else{
+            /**
+             *  카테고리가 존재하지 않는다면 새로운 카테고리를 생성하여 가게를 연결
+             * */
+            Category newCategory = Category.createCategory(requestDto.getCategory());
+            categoryRepository.save(newCategory);
+            CategoryStore.createCategoryStore(newCategory,store);
+        }
         return store.getId();
     }
 

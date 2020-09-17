@@ -96,6 +96,7 @@ public class StoreSearchRepository {
                         , categoryNameEq(searchCondition.getCategoryName()))
                 .fetch();
 
+
         List<Store> storeList = results
                 .stream()
                 .map(CategoryStore::getStore)
