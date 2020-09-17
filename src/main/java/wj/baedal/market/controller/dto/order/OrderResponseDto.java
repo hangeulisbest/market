@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wj.baedal.market.controller.dto.ordermenu.OrderMenuResponseDto;
+import wj.baedal.market.entity.DeliveryStatus;
 import wj.baedal.market.entity.OrderStatus;
 
 import java.time.LocalDateTime;
@@ -35,12 +36,15 @@ public class OrderResponseDto {
     private String street;
     private String zipcode;
 
+    //배달 상태
+    private DeliveryStatus deliveryStatus;
+
     //주문 상태
     private OrderStatus orderStatus;
 
 
     @Builder
-    public OrderResponseDto(Long orderId,Long userId, String username, LocalDateTime orderDate, List<OrderMenuResponseDto> orderMenuList, String city, String street, String zipcode, OrderStatus orderStatus) {
+    public OrderResponseDto(Long orderId,Long userId, String username, LocalDateTime orderDate, List<OrderMenuResponseDto> orderMenuList, String city, String street, String zipcode,DeliveryStatus deliveryStatus ,OrderStatus orderStatus) {
         this.orderId = orderId;
         this.userId = userId;
         this.username = username;
@@ -49,6 +53,7 @@ public class OrderResponseDto {
         this.city = city;
         this.street = street;
         this.zipcode = zipcode;
+        this.deliveryStatus = deliveryStatus;
         this.orderStatus = orderStatus;
     }
 }

@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import wj.baedal.market.controller.dto.order.OrderListResponseDto;
 import wj.baedal.market.controller.dto.order.OrderResponseDto;
 import wj.baedal.market.controller.dto.order.OrderSaveRequestDto;
+import wj.baedal.market.controller.dto.order.OrderSummaryResponseDto;
+import wj.baedal.market.entity.order.Order;
+import wj.baedal.market.entity.order.OrderRepository;
 import wj.baedal.market.repository.order.OrderSearchCondition;
 import wj.baedal.market.service.orderservice.OrderService;
 
@@ -91,6 +94,25 @@ public class OrderApiController {
     public Page<OrderResponseDto> searchOrder(@PageableDefault(sort = {"orderStatus"})Pageable pageable,
                                               @RequestBody OrderSearchCondition searchCondition){
         return orderService.searchOrder(pageable,searchCondition);
+    }
+
+    @PostMapping("/api/v3/orders")
+    public Page<OrderSummaryResponseDto> searchOrderV3(
+            @PageableDefault(sort = {"orderId"}) Pageable pageable,
+            @RequestBody OrderSearchCondition searchCondition
+    ){
+        return orderService.searchOrderV3(pageable,searchCondition);
+    }
+
+    @GetMapping("/api/v1/orders/{id}")
+    public OrderResponseDto findById(@PathVariable Long id){
+        return orderService.findById(id);
+    }
+
+    @PutMapping("/api/v1/orders/{id}")
+    public Long compleDelivery(@PathVariable Long id){
+        orderService.deliveryComplete(id);
+        return id;
     }
 
     /**

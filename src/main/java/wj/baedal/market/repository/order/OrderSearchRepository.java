@@ -8,7 +8,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import wj.baedal.market.controller.dto.menu.MenuResponseDto;
 import wj.baedal.market.controller.dto.order.OrderResponseDto;
+import wj.baedal.market.controller.dto.order.OrderSummaryResponseDto;
+import wj.baedal.market.controller.dto.order.QOrderSummaryResponseDto;
 import wj.baedal.market.controller.dto.ordermenu.OrderMenuResponseDto;
 import wj.baedal.market.entity.OrderStatus;
 import wj.baedal.market.entity.delivery.QDelivery;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 import static wj.baedal.market.entity.delivery.QDelivery.delivery;
+import static wj.baedal.market.entity.menu.QMenu.menu;
 import static wj.baedal.market.entity.order.QOrder.order;
 import static wj.baedal.market.entity.ordermenu.QOrderMenu.orderMenu;
 import static wj.baedal.market.entity.user.QUser.user;
@@ -114,7 +118,7 @@ public class OrderSearchRepository {
 
     /** 주문상테가 null 이라면 null 을 반환하며 아니면 같은지 다른지 boolean으로 반환*/
     public BooleanExpression orderStatusEq(OrderStatus status){
-        if (status!=null){
+        if (status.equals(OrderStatus.ORDER) || status.equals(OrderStatus.CANCEL)){
             return order.orderStatus.eq(status);
         }
         return null;
@@ -184,4 +188,71 @@ public class OrderSearchRepository {
 
         return new PageImpl<>(collectContent,pageable,total);
     }
+
+    public Page<OrderSummaryResponseDto> searchOrderV3(Pageable pageable, OrderSearchCondition searchCondition) {
+
+        List<Order> results = queryFactory
+                .selectFrom(order)
+                .leftJoin(order.delivery, delivery).fetchJoin()
+                .leftJoin(order.user, user).fetchJoin()
+                .where(orderStatusEq(searchCondition.getOrderStatus()),
+                        userIdEq(searchCondition.getUserId()))
+                .fetch();
+
+
+        List<OrderSummaryResponseDto> dto = results.stream().map(
+                o -> OrderSummaryResponseDto.builder()
+                        .orderId(o.getId())
+                        .userId(o.getUser().getId())
+                        .userName(o.getUser().getName())
+                        .orderDate(o.getOrderDate())
+                        .deliveryStatus(o.getDelivery().getDeliveryStatus())
+                        .orderStatus(o.getOrderStatus())
+                        .build()
+        ).collect(Collectors.toList());
+
+        dto.sort((o1, o2) -> {
+            return o1.getOrderId()<=o2.getOrderId()?1:-1;
+        });
+
+        int start = (int)pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > dto.size() ? dto.size() : (start + pageable.getPageSize());
+
+        return new PageImpl<>(dto.subList(start,end),pageable,dto.size());
+    }
+
+    public OrderResponseDto findById(Long id){
+        List<OrderMenu> orderMenuList = queryFactory
+                .selectFrom(orderMenu)
+                .leftJoin(orderMenu.order, order).fetchJoin()
+                .leftJoin(order.delivery,delivery).fetchJoin()
+                .leftJoin(order.user,user).fetchJoin()
+                .leftJoin(orderMenu.menu, menu).fetchJoin()
+                .where(order.id.eq(id))
+                .fetch();
+
+        List<OrderMenuResponseDto> orderMenuDto = orderMenuList.stream().map(
+                o -> OrderMenuResponseDto.builder()
+                        .menuId(o.getMenu().getId())
+                        .count(o.getCount())
+                        .build()
+        ).collect(Collectors.toList());
+
+        Order order = orderMenuList.stream().map(OrderMenu::getOrder).collect(Collectors.toSet())
+                .stream().collect(Collectors.toList()).get(0);
+
+        return OrderResponseDto.builder()
+                .orderMenuList(orderMenuDto)
+                .orderId(order.getId())
+                .userId(order.getUser().getId())
+                .username(order.getUser().getName())
+                .orderDate(order.getOrderDate())
+                .orderStatus(order.getOrderStatus())
+                .city(order.getDelivery().getAddress().getCity())
+                .street(order.getDelivery().getAddress().getStreet())
+                .zipcode(order.getDelivery().getAddress().getZipcode())
+                .deliveryStatus(order.getDelivery().getDeliveryStatus())
+                .build();
+    }
+
 }

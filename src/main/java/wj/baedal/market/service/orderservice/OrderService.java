@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wj.baedal.market.controller.dto.order.OrderListResponseDto;
 import wj.baedal.market.controller.dto.order.OrderResponseDto;
 import wj.baedal.market.controller.dto.order.OrderSaveRequestDto;
+import wj.baedal.market.controller.dto.order.OrderSummaryResponseDto;
 import wj.baedal.market.entity.Address;
 import wj.baedal.market.entity.delivery.Delivery;
 import wj.baedal.market.entity.menu.Menu;
@@ -86,7 +87,10 @@ public class OrderService {
     }
 
 
-    /**주문 검색*/
+    /**
+     * 주문 검색
+     * deprecated
+     * */
     @Transactional(readOnly = true)
     public OrderListResponseDto searchOrderQueryDSL(OrderSearchCondition searchCondition){
         /**
@@ -120,10 +124,32 @@ public class OrderService {
 
     /**
      *  주문 검색 + 페이징
+     *  deprecated
      * */
 
     @Transactional(readOnly = true)
     public Page<OrderResponseDto> searchOrder(Pageable pageable, OrderSearchCondition searchCondition) {
         return orderSearchRepository.searchOrder(pageable,searchCondition);
+    }
+
+
+    @Transactional(readOnly = true)
+    public Page<OrderSummaryResponseDto> searchOrderV3(Pageable pageable,OrderSearchCondition searchCondition){
+        return orderSearchRepository.searchOrderV3(pageable,searchCondition);
+    }
+
+    @Transactional(readOnly = true)
+    public OrderResponseDto findById(Long id) {
+        orderRepository.findById(id).orElseThrow(
+                ()->new IllegalArgumentException("해당하는 주문이 없습니다.")
+        );
+        return orderSearchRepository.findById(id);
+    }
+
+    @Transactional
+    public void deliveryComplete(Long id) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 주문이 없습니다."));
+
+        order.deliveryComplete();
     }
 }

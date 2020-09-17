@@ -123,6 +123,14 @@ public class StoreSearchRepository {
         return new PageImpl<>(dto.subList(start,end),pageable,dto.size());
     }
 
+    /**
+     *  Deprecated !
+     *
+     *  가게의 중복을 거르지 못하며 페이징 컨텐츠에 심각한 오류 발견
+     *
+     *  searchStoreV5 를 사용.
+     *
+     * */
     public Page<StoreSearchResponseDto> searchStore(Pageable pageable,StoreSearchCondition searchCondition){
         /**
          * categoryStore를 기준으로 category는 다대일 이며,

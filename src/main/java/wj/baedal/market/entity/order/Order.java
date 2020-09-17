@@ -75,4 +75,12 @@ public class Order {
         }
     }
 
+    /**
+     *  배달 처리 완료 메서드
+     * */
+
+    public void deliveryComplete(){
+        this.delivery.completeDelivery();
+    }
+
 }

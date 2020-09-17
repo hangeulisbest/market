@@ -1,0 +1,57 @@
+{{>layout/header}}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-mid-12 text-center">
+            <h1> 주문 조회</h1>
+            <br><br>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center col-md-4 col-md-offset-4">
+            <form>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">주문 번호</label>
+                    <input type="text" class="form-control" id="orderId" value="{{order.orderId}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">주문자 아이디</label>
+                    <input type="text" class="form-control" id="userId" value="{{order.userId}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">주문자 이름</label>
+                    <input type="text" class="form-control" id="userName" value="{{order.username}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">주문 날짜</label>
+                    <input type="text" class="form-control" id="orderDate" value="{{order.orderDate}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">배달 위치</label>
+                    <input type="text" class="form-control" id="deliveryAddress" value="{{order.city}} - {{order.street}} - {{order.zipcode}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">주문 상태</label>
+                    <input type="text" class="form-control" id="orderStatus" value="{{order.orderStatus}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">배달 상태</label>
+                    <input type="text" class="form-control" id="deliveryStatus" value="{{order.deliveryStatus}}" readonly>
+                </div>
+                    {{#order.orderMenuList}}
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">주문 메뉴 아이디</label>
+                            <input type="text" class="form-control" id="menu-id" value="{{menuId}}" readonly>
+                            <label for="exampleInputEmail1">주문 메뉴 개수</label>
+                            <input type="text" class="form-control" id="menu-count" value="{{count}}" readonly>
+                        </div>
+                    {{/order.orderMenuList}}
+                <button type="button" class="btn btn-default" id="btn-order-delivery-compl">배달완료처리</button>
+                <button type="button" class="btn btn-default" id="btn-order-cancel">주문 취소</button>
+                <a href="/" role="button" class="btn btn-default">돌아가기</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+{{>layout/footer}}
